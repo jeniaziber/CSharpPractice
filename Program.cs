@@ -19,6 +19,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IEditionService, EditionService>();
+builder.Services.AddScoped<IEditionRepository, EditionRepository>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
 // ----------------- App Pipeline -----------------
 var app = builder.Build();

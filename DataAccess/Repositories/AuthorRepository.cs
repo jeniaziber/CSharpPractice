@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MyBookApi.Models;
 
 namespace MyBookApi.DataAccess.Repositories
@@ -11,29 +12,45 @@ namespace MyBookApi.DataAccess.Repositories
             _context = context;
         }
 
+        // Получить автора по ID
         public async Task<Author?> GetByIdAsync(int id)
         {
             return await _context.Authors.FindAsync(id);
         }
 
-        public Task<IEnumerable<Author>> GetAllAsync()
+        // Получить всех авторов
+        public async Task<IEnumerable<Author>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Authors.ToListAsync();
         }
 
-        public Task AddAsync(Author author)
+        // Добавить нового автора
+        public async Task AddAsync(Author author)
         {
-            throw new NotImplementedException();
+            _context.Authors.Add(author);
+            await _context.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(Author author)
+        // Обновить данные автора
+        public async Task UpdateAsync(Author author)
         {
-            throw new NotImplementedException();
+            var existing = await _context.Authors.FindAsync(author.Id);
+            if (existing == null) return;
+
+            existing.Name = author.Name;
+            // здесь можно обновить другие поля
+
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        // Удалить автора по ID
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var author = await _context.Authors.FindAsync(id);
+            if (author == null) return;
+
+            _context.Authors.Remove(author);
+            await _context.SaveChangesAsync();
         }
     }
 }

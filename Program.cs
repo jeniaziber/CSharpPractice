@@ -7,7 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ----------------- Services -----------------
 //very good
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    options.JsonSerializerOptions.WriteIndented = true;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -26,6 +31,8 @@ builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
 // ----------------- App Pipeline -----------------
 var app = builder.Build();
+
+await app.Services.SeedAsync();
 
 if (app.Environment.IsDevelopment())
 {

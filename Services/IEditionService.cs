@@ -1,3 +1,5 @@
+// IEditionService.cs
+
 using MyBookApi.Models;
 
 namespace MyBookApi.Services
@@ -6,9 +8,11 @@ namespace MyBookApi.Services
     {
         Task<IEnumerable<Edition>> GetAllAsync();
         Task<Edition?> GetByIdAsync(int id);
-        Task AddAsync(Edition edition);  // Добавить метод для добавления
+        Task AddAsync(Edition edition);
         Task UpdateAsync(Edition edition);
         Task DeleteAsync(int id);
+
+        // Метод для получения всех изданий конкретной книги
         Task<IEnumerable<Edition>> GetEditionsByBookIdAsync(int bookId);
     }
 }

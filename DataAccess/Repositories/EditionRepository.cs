@@ -12,36 +12,53 @@ public class EditionRepository : IEditionRepository
         _context = context;
     }
 
-    public Task<IEnumerable<Edition>> GetAllAsync()
+    // Получить все издания
+    public async Task<IEnumerable<Edition>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Editions.ToListAsync();
     }
 
-    public Task<Edition?> GetByIdAsync(int id)
+    // Получить издание по ID
+    public async Task<Edition?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Editions.FindAsync(id);
     }
     
+    // Получить все издания конкретной книги
     public async Task<IEnumerable<Edition>> GetAllByBookIdAsync(int bookId)
     {
-        return await _context.Editions.Where(e => e.BookId == bookId).ToListAsync();
+        return await _context.Editions
+            .Where(e => e.BookId == bookId)
+            .ToListAsync();
     }
 
+    // Добавить новое издание
     public async Task AddAsync(Edition edition)
     {
         _context.Editions.Add(edition);
         await _context.SaveChangesAsync();
     }
 
-    public Task UpdateAsync(Edition edition)
+    // Обновить издание
+    public async Task UpdateAsync(Edition edition)
     {
-        throw new NotImplementedException();
+        var existing = await _context.Editions.FindAsync(edition.Id);
+        if (existing == null) return;
+
+        existing.Format = edition.Format;
+        existing.ReleaseDate = edition.ReleaseDate;
+        existing.BookId = edition.BookId;
+
+        await _context.SaveChangesAsync();
     }
 
-    public Task DeleteAsync(int id)
+    // Удалить издание
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
-    }
+        var edition = await _context.Editions.FindAsync(id);
+        if (edition == null) return;
 
-    // Остальные методы для работы с изданиями
+        _context.Editions.Remove(edition);
+        await _context.SaveChangesAsync();
+    }
 }

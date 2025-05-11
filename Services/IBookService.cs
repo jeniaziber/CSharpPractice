@@ -1,7 +1,5 @@
 using MyBookApi.Models;
 
-namespace MyBookApi.Services;
-
 public interface IBookService
 {
     Task<IEnumerable<Book>> GetAllAsync();
@@ -9,5 +7,7 @@ public interface IBookService
     Task AddAsync(Book book);
     Task UpdateAsync(Book book);
     Task DeleteAsync(int id);
+
+    Task AddEditionAsync(Edition edition);
     Task<IEnumerable<Book>> GetAllByAuthorIdAsync(int authorId);
 }

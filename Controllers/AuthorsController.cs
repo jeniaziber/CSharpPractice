@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyBookApi.Models;
 using MyBookApi.Services;
@@ -41,7 +44,7 @@ namespace MyBookApi.Controllers
     
         // POST api/authors
         [HttpPost]
-        public async Task<ActionResult> Create(Author author)
+        public async Task<ActionResult> Create([FromBody] Author author)
         {
             await _authorService.AddAsync(author);
             return CreatedAtAction(nameof(GetById), new { id = author.Id }, author);
@@ -49,7 +52,7 @@ namespace MyBookApi.Controllers
     
         // PUT api/authors/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, Author author)
+        public async Task<ActionResult> Update(int id, [FromBody] Author author)
         {
             if (id != author.Id) return BadRequest();
             var existing = await _authorService.GetByIdAsync(id);
@@ -70,6 +73,7 @@ namespace MyBookApi.Controllers
             return NoContent();
         }
         
+        // GET api/authors/{authorId}/editions
         [HttpGet("{authorId}/editions")]
         public async Task<ActionResult<IEnumerable<Edition>>> GetAllEditionsByAuthorId(int authorId)
         {

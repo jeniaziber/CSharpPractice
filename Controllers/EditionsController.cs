@@ -15,6 +15,15 @@ namespace BookShelf.Controllers
             _service = service;
         }
 
+        // GET api/editions
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Edition>>> GetAll()
+        {
+            var editions = await _service.GetAllAsync();
+            return Ok(editions);
+        }
+
+        // GET api/editions/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Edition>> GetById(int id)
         {
@@ -25,13 +34,39 @@ namespace BookShelf.Controllers
             return Ok(edition);
         }
 
+        // POST api/editions
         [HttpPost]
-        public async Task<ActionResult> Create(Edition edition)
+        public async Task<ActionResult> Create([FromBody] Edition edition)
         {
             await _service.AddAsync(edition);
-            return CreatedAtAction(nameof(GetById), new { id = edition.Id }, edition);  // Ссылаемся на GetById
+            return CreatedAtAction(nameof(GetById), new { id = edition.Id }, edition);
         }
 
-        // Другие методы...
+        // PUT api/editions/{id}
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(int id, [FromBody] Edition edition)
+        {
+            if (id != edition.Id)
+                return BadRequest("ID в URL и теле не совпадают");
+
+            var existing = await _service.GetByIdAsync(id);
+            if (existing == null)
+                return NotFound();
+
+            await _service.UpdateAsync(edition);
+            return NoContent();
+        }
+
+        // DELETE api/editions/{id}
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existing = await _service.GetByIdAsync(id);
+            if (existing == null)
+                return NotFound();
+
+            await _service.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }

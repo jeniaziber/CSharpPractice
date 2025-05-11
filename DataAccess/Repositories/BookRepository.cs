@@ -12,11 +12,15 @@ public class BookRepository : IBookRepository
         _context = context;
     }
 
+    // Получить все книги
     public async Task<IEnumerable<Book>> GetAllAsync()
     {
-        return await _context.Books.ToListAsync();
+        return await _context.Books
+            .Include(b => b.Editions)
+            .ToListAsync();
     }
 
+    // Получить книгу по ID вместе с изданиями
     public async Task<Book?> GetByIdAsync(int id)
     {
         return await _context.Books
@@ -24,25 +28,30 @@ public class BookRepository : IBookRepository
             .FirstOrDefaultAsync(b => b.Id == id);
     }
 
+    // Добавить новую книгу
     public async Task AddAsync(Book book)
     {
         _context.Books.Add(book);
         await _context.SaveChangesAsync();
     }
 
+    // Обновить книгу
     public async Task UpdateAsync(Book book)
     {
-        var existing = await _context.Books.FindAsync(book.Id);
+        var existing = await _context.Books
+            .Include(b => b.Editions)
+            .FirstOrDefaultAsync(b => b.Id == book.Id);
         if (existing == null) return;
 
         existing.Title = book.Title;
         existing.AuthorId = book.AuthorId;
-        existing.Editions = existing.Editions;
         existing.Year = book.Year;
+        // Если нужно обновить издания, это лучше делать через отдельный репозиторий
 
         await _context.SaveChangesAsync();
     }
 
+    // Удалить книгу
     public async Task DeleteAsync(int id)
     {
         var book = await _context.Books.FindAsync(id);
@@ -52,10 +61,12 @@ public class BookRepository : IBookRepository
         await _context.SaveChangesAsync();
     }
 
+    // Получить все книги конкретного автора
     public async Task<IEnumerable<Book>> GetAllByAuthorIdAsync(int authorId)
     {
         return await _context.Books
             .Where(b => b.AuthorId == authorId)
+            .Include(b => b.Editions)
             .ToListAsync();
     }
 }

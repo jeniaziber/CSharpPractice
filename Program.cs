@@ -1,5 +1,6 @@
 using MyBookApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using MyBookApi;
 using MyBookApi.DataAccess.Repositories;
 using MyBookApi.Services;
 
@@ -42,7 +43,7 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "BookShelf API v1");
     });
 }
-
+app.UseErrorHandling();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

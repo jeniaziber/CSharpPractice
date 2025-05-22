@@ -43,7 +43,7 @@ public class EditionRepository : IEditionRepository
     public async Task UpdateAsync(Edition edition)
     {
         var existing = await _context.Editions.FindAsync(edition.Id);
-        if (existing == null) return;
+        //if (existing == null) return;
 
         existing.Format = edition.Format;
         existing.ReleaseDate = edition.ReleaseDate;
@@ -56,7 +56,7 @@ public class EditionRepository : IEditionRepository
     public async Task DeleteAsync(int id)
     {
         var edition = await _context.Editions.FindAsync(id);
-        if (edition == null) return;
+        //if (edition == null) return;
 
         _context.Editions.Remove(edition);
         await _context.SaveChangesAsync();

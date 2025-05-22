@@ -37,8 +37,7 @@ namespace BookShelf.Controllers
         public async Task<ActionResult<Book>> GetById(int id)
         {
             var book = await _bookService.GetByIdAsync(id);
-            if (book == null)
-                return NotFound();
+            //if (book == null) return NotFound();
 
             return Ok(book);
         }
@@ -49,8 +48,7 @@ namespace BookShelf.Controllers
         {
             // Проверка существования автора
             var author = await _authorService.GetByIdAsync(book.AuthorId);
-            if (author == null)
-                return BadRequest("Автор с таким ID не существует");
+            //if (author == null) return BadRequest("Автор с таким ID не существует");
 
             await _bookService.AddAsync(book);
             return CreatedAtAction(nameof(GetById), new { id = book.Id }, book);
@@ -64,8 +62,7 @@ namespace BookShelf.Controllers
                 return BadRequest("ID в URL и теле не совпадают");
 
             var existing = await _bookService.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound();
+            //if (existing == null) return NotFound();
 
             await _bookService.UpdateAsync(book);
             return NoContent();
@@ -76,8 +73,7 @@ namespace BookShelf.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var existing = await _bookService.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound();
+            //if (existing == null) return NotFound();
 
             await _bookService.DeleteAsync(id);
             return NoContent();
@@ -88,8 +84,7 @@ namespace BookShelf.Controllers
         public async Task<ActionResult> AddEdition(int bookId, [FromBody] Edition edition)
         {
             var book = await _bookService.GetByIdAsync(bookId);
-            if (book == null)
-                return NotFound("Книга не найдена");
+            //if (book == null) return NotFound("Книга не найдена");
 
             edition.BookId = bookId;
             await _editionService.AddAsync(edition);
@@ -108,8 +103,7 @@ namespace BookShelf.Controllers
         public async Task<ActionResult<IEnumerable<Edition>>> GetAllEditionsByBookId(int bookId)
         {
             var book = await _bookService.GetByIdAsync(bookId);
-            if (book == null)
-                return NotFound("Книга не найдена");
+            //if (book == null) return NotFound("Книга не найдена");
 
             var editions = await _editionService.GetEditionsByBookIdAsync(bookId);
             return Ok(editions);

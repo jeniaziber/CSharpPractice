@@ -35,7 +35,7 @@ namespace MyBookApi.DataAccess.Repositories
         public async Task UpdateAsync(Author author)
         {
             var existing = await _context.Authors.FindAsync(author.Id);
-            if (existing == null) return;
+            //if (existing == null) return;
 
             existing.Name = author.Name;
             // здесь можно обновить другие поля

@@ -38,7 +38,7 @@ namespace MyBookApi.Controllers
         public async Task<ActionResult<Author>> GetById(int id)
         {
             var author = await _authorService.GetByIdAsync(id);
-            if (author == null) return NotFound();
+            //if (author == null) return NotFound();
             return Ok(author);
         }
     
@@ -56,7 +56,7 @@ namespace MyBookApi.Controllers
         {
             if (id != author.Id) return BadRequest();
             var existing = await _authorService.GetByIdAsync(id);
-            if (existing == null) return NotFound();
+            //if (existing == null) return NotFound();
     
             await _authorService.UpdateAsync(author);
             return NoContent();
@@ -67,7 +67,7 @@ namespace MyBookApi.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var existing = await _authorService.GetByIdAsync(id);
-            if (existing == null) return NotFound();
+            //if (existing == null) return NotFound();
     
             await _authorService.DeleteAsync(id);
             return NoContent();
@@ -78,13 +78,13 @@ namespace MyBookApi.Controllers
         public async Task<ActionResult<IEnumerable<Edition>>> GetAllEditionsByAuthorId(int authorId)
         {
             var author = await _authorService.GetByIdAsync(authorId);
-            if (author == null)
-                return NotFound("Автор не найден");
+            //if (author == null)
+                //return NotFound("Автор не найден");
 
             // Получаем все книги этого автора
             var books = await _bookService.GetAllByAuthorIdAsync(authorId);
-            if (books == null || !books.Any())
-                return NotFound("У автора нет книг");
+            //if (books == null || !books.Any())
+              //  return NotFound("У автора нет книг");
 
             // Собираем все издания для найденных книг
             var editions = new List<Edition>();

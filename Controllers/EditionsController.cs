@@ -28,8 +28,7 @@ namespace BookShelf.Controllers
         public async Task<ActionResult<Edition>> GetById(int id)
         {
             var edition = await _service.GetByIdAsync(id);
-            if (edition == null)
-                return NotFound();
+            //if (edition == null) return NotFound();
 
             return Ok(edition);
         }
@@ -50,8 +49,7 @@ namespace BookShelf.Controllers
                 return BadRequest("ID в URL и теле не совпадают");
 
             var existing = await _service.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound();
+            //if (existing == null) return NotFound();
 
             await _service.UpdateAsync(edition);
             return NoContent();
@@ -62,8 +60,7 @@ namespace BookShelf.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var existing = await _service.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound();
+            //if (existing == null) return NotFound();
 
             await _service.DeleteAsync(id);
             return NoContent();
